@@ -7,7 +7,7 @@ import { getFileExtension } from "../util/util";
 import { UploadToFirebaseStorage } from "../../firestore/firebaseService";
 import { toast } from "react-toastify";
 import { updateUserProfilePhoto } from "../../firestore/firestoreService";
-import * as firebase from "firebase";
+import firebase from "../../config/firebase";
 
 
 export default function PhotoUploadWidget({setEditMode}) {

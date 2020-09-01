@@ -100,7 +100,7 @@ export default function EventForm({ match, history }) {
             <MyTextArea name='description' placeholder='Description' rows={3} />
             <Header sub color='teal' content='Event Location Details' />
             <MyTextInput name='city' placeholder='City' />
-            <MyTextInput name='venue' placeholder='Venue' />
+            <MyTextInput name='venue' placeholder='Venue' autoComplete="off"/>
             <MyDateInput
               name='date'
               placeholderText='Event date'
@@ -108,6 +108,7 @@ export default function EventForm({ match, history }) {
               showTimeSelect
               timeCaption='time'
               dateFormat='MMMM d, yyyy h:mm a'
+              autoComplete="off"
             />
             {selectedEvent && (
               <Button
