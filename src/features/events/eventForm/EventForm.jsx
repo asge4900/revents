@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Segment, Header, Button, Confirm } from "semantic-ui-react";
 import { Link, Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { listenToEvents } from "../eventAction";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import MyTextInput from "../../../app/common/form/MyTextInput";
@@ -19,14 +18,13 @@ import {
 } from "../../../app/firestore/firestoreService";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { toast } from "react-toastify";
+import { listenToSelectedEvent } from "../eventAction";
 
 export default function EventForm({ match, history }) {
   const dispatch = useDispatch();
   const [loadingCancel, setLoadingCancel] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const selectedEvent = useSelector((state) =>
-    state.event.events.find((e) => e.id === match.params.id)
-  );
+  const { selectedEvent } = useSelector((state) => state.event);
   const { loading, error } = useSelector((state) => state.async);
 
   const initialValues = selectedEvent ?? {
@@ -62,7 +60,7 @@ export default function EventForm({ match, history }) {
   useFirestoreDoc({
     shouldExecute: !!match.params.id,
     query: () => listenToEventFromFirestore(match.params.id),
-    data: (event) => dispatch(listenToEvents([event])),
+    data: (event) => dispatch(listenToSelectedEvent(event)),
     deps: [match.params.id, dispatch],
   });
 
@@ -100,7 +98,7 @@ export default function EventForm({ match, history }) {
             <MyTextArea name='description' placeholder='Description' rows={3} />
             <Header sub color='teal' content='Event Location Details' />
             <MyTextInput name='city' placeholder='City' />
-            <MyTextInput name='venue' placeholder='Venue' autoComplete="off"/>
+            <MyTextInput name='venue' placeholder='Venue' autoComplete='off' />
             <MyDateInput
               name='date'
               placeholderText='Event date'
@@ -108,7 +106,7 @@ export default function EventForm({ match, history }) {
               showTimeSelect
               timeCaption='time'
               dateFormat='MMMM d, yyyy h:mm a'
-              autoComplete="off"
+              autoComplete='off'
             />
             {selectedEvent && (
               <Button
